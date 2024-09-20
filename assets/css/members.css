@@ -1,0 +1,64 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    background-color: #f0f0f0;
+}
+
+#speakers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    padding-bottom: 40px;
+    margin: 10px;
+    margin-top: 30px;
+    text-align: center;
+    column-gap: 50px;
+}
+
+.speaker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#speakers img {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    margin: 10px;
+    object-fit: cover;
+}
+
+label {
+    margin-top: 10px;
+}
+
+#submitVote {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+#submitVote:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+alert {
+    color: red;
+    font-size: 16px;
+    margin-top: 10px;
+}
