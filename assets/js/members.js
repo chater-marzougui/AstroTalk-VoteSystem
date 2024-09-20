@@ -30,12 +30,6 @@ async function enterPresentation() {
             speaker: "Speaker 1"
         })
     });
-
-    if (response.ok) {
-        alert("Your vote has been submitted successfully!");
-    } else {
-        alert("Error submitting vote. Please try again.");
-    }
 }
 
 enterPresentation();
