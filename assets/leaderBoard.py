@@ -128,6 +128,21 @@ def submit_vote():
 
     return 'Vote submitted successfully!', 200
 
+
+@app.route('/bureau-vote', methods=['POST'])
+def submit_bureau_vote():
+    data = request.json
+    with open(speakers_file, 'r') as file:
+        spk = json.load(file)
+    vote = data['vote']
+    speaker_id = data['speaker']
+    for speaker in spk['speakers']:
+        if speaker['Id'] == speaker_id:
+            speaker['Bureau Votes'][vote] += 1
+            break
+    with open(speakers_file, 'w') as file:
+        json.dump(spk, file)
+    return 'Vote submitted successfully!', 200
 # Endpoint to get the current speakers
 @app.route('/speakers', methods=['GET'])
 def get_speakers():

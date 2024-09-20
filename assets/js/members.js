@@ -19,7 +19,7 @@ async function fetchSpeakers() {
 
 async function enterPresentation() {
 
-    const response = await fetch(host + '/enter-presentation', {
+    await fetch(host + '/enter-presentation', {
         method: 'POST',
         headers: new Headers({
             "ngrok-skip-browser-warning": "69420",
@@ -40,7 +40,7 @@ async function submitVote() {
         return;
     }
 
-    const response = await fetch(host + ':5000/member-vote', {
+    const response = await fetch(host + '/member-vote', {
         method: 'POST',
         headers: new Headers({
             "ngrok-skip-browser-warning": "69420",
