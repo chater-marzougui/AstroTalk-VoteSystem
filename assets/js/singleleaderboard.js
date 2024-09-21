@@ -1,7 +1,7 @@
 let speakers, lastSpeakers;
 let speakersChart;
 
-const host = "https://95aa-196-203-181-122.ngrok-free.app";
+const host = "https://0cdc-197-240-127-17.ngrok-free.app";
 
 
 async function fetchSpeakers() {

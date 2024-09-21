@@ -143,7 +143,7 @@ def submit_bureau_vote():
     with open(speakers_file, 'w') as file:
         json.dump(spk, file)
     return 'Vote submitted successfully!', 200
-# Endpoint to get the current speakers
+
 @app.route('/speakers', methods=['GET'])
 def get_speakers():
     with open(speakers_file, 'r') as file:
