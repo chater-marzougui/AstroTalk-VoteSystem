@@ -1,1 +1,43 @@
-{"speakers": [{"Id": 1, "name": "Karim Laamouri", "photo": "assets/images/karim-laamouri.jpg", "project": "Morning Stars", "Bureau Votes": {"Technical": 5.5, "Presentation": 0, "Posture": 0, "depth of knowledge": 0}, "Member Votes": 2}, {"Id": 2, "name": "Marzougui", "photo": "assets/images/marzougui.jpg", "project": "Sun's Radiation", "Bureau Votes": {"Technical": 0, "Presentation": 0, "Posture": 0, "depth of knowledge": 0}, "Member Votes": 3}, {"Id": 3, "name": "supcom", "photo": "./assets/images/supcom.jpg", "project": "Astro TALK", "Bureau Votes": {"Technical": 0, "Presentation": 0, "Posture": 0, "depth of knowledge": 0}, "Member Votes": 1}]}
+{
+  "speakers": [
+    {
+      "Id": 1,
+      "name": "Karim Laamouri",
+      "photo": "assets/images/karim-laamouri.jpg",
+      "project": "Morning Stars",
+      "Bureau Votes": {
+        "Technical": 10,
+        "Presentation": 10,
+        "Posture": 10,
+        "depth of knowledge": 10
+      },
+      "Member Votes": 8
+    },
+    {
+      "Id": 2,
+      "name": "Marzougui",
+      "photo": "assets/images/marzougui.jpg",
+      "project": "Sun's Radiation",
+      "Bureau Votes": {
+        "Technical": 0,
+        "Presentation": 0,
+        "Posture": 0,
+        "depth of knowledge": 0
+      },
+      "Member Votes": 50
+    },
+    {
+      "Id": 3,
+      "name": "supcom",
+      "photo": "./assets/images/supcom.jpg",
+      "project": "Astro TALK",
+      "Bureau Votes": {
+        "Technical": 0,
+        "Presentation": 0,
+        "Posture": 0,
+        "depth of knowledge": 0
+      },
+      "Member Votes": 0
+    }
+  ]
+}

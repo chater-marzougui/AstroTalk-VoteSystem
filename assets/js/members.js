@@ -1,16 +1,13 @@
-let speakers;
-
 const speakersID = document.getElementById('speakers');
 const submitButton = document.getElementById('submitVote');
 let selectedSpeaker = null;
-
-const host = "http://localhost:5000";
-
+let speakers;
 
 async function fetchSpeakers() {
     const response = await fetch(host + "/speakers", {
         headers: {
-            'ngrok-skip-browser-warning': 'true'
+            'ngrok-skip-browser-warning': 'true',
+            'bypass-tunnel-reminder': 'true'
         }
     });
     speakers = await response.json();
@@ -24,7 +21,7 @@ async function enterPresentation() {
         headers: new Headers({
             "ngrok-skip-browser-warning": "69420",
             'Content-Type': 'application/json',
-
+            'bypass-tunnel-reminder': 'true'
           }),
         body: JSON.stringify({
             speaker: "Speaker 1"
@@ -45,6 +42,7 @@ async function submitVote() {
         headers: new Headers({
             "ngrok-skip-browser-warning": "69420",
             'Content-Type': 'application/json',
+            'bypass-tunnel-reminder': 'true'
 
         }),
         body: JSON.stringify({

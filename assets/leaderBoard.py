@@ -1,9 +1,9 @@
 import random
 import os
 import json
-from flask import Flask, request, jsonify, abort
-from flask_cors import CORS
-from zeroconf import Zeroconf, ServiceInfo
+from flask import Flask, request, jsonify, abort # type: ignore
+from flask_cors import CORS # type: ignore
+from zeroconf import Zeroconf, ServiceInfo # type: ignore
 import socket
 
 app = Flask(__name__)

@@ -3,8 +3,6 @@ const speakersList = document.getElementById('speakers');
 const submitButton = document.getElementById('submitVote');
 let selectedSpeaker = null;
 
-const host = 'http://localhost:5000';
-
 document.addEventListener('DOMContentLoaded', () => {
     
     // Handle form submission for adding a new speaker
@@ -20,7 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'ngrok-skip-browser-warning': '455'
+                'ngrok-skip-browser-warning': '455',
+                'bypass-tunnel-reminder': 'true'
             },
             body: JSON.stringify(newSpeaker)
         })
@@ -42,7 +41,8 @@ function deleteSpeaker() {
     fetch(host + `/delete-speaker/${selectedSpeaker}`, { // Use the ID in the URL
         method: 'DELETE',
         headers: {
-            'ngrok-skip-browser-warning': '455'
+            'ngrok-skip-browser-warning': '455',
+            'bypass-tunnel-reminder': 'true'
         }
     })
     .then(response => {
@@ -59,7 +59,8 @@ function deleteSpeaker() {
 async function fetchSpeakers() {
     const response = await fetch(host + "/speakers", {
         headers: {
-            'ngrok-skip-browser-warning': 'true'
+            'ngrok-skip-browser-warning': 'true',
+            'bypass-tunnel-reminder': 'true'
         }
     });
     return await response.json(); // Return the parsed JSON

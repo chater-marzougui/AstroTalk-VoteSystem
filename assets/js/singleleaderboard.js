@@ -1,13 +1,11 @@
 let speakers, lastSpeakers;
 let speakersChart;
 
-const host = "http://localhost:5000";
-
-
 async function fetchSpeakers() {
     const response = await fetch(host + "/speakers", {
         headers: {
-            'ngrok-skip-browser-warning': 'true'
+            'ngrok-skip-browser-warning': 'true',
+            'bypass-tunnel-reminder': 'true'
         }
     });
     speakers = await response.json();
@@ -39,13 +37,11 @@ async function updateSpeakersVisualization() {
     });
 
     if (speakersChart) {
-        // Update the chart's data directly instead of recreating it
         speakersChart.data.labels = labels;
         speakersChart.data.datasets[0].data = bureauVotes;  // Bureau Votes
         speakersChart.data.datasets[1].data = memberVotes;  // Member Votes
         speakersChart.update();  // This will animate the changes
     } else {
-        // Create the chart if it doesn't exist
         const speakersChartCanvas = document.getElementById('speakersChart');
         const speakersChartCtx = speakersChartCanvas.getContext('2d');
 

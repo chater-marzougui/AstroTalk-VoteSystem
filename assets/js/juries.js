@@ -1,13 +1,12 @@
 let speakers;
 const speakersDiv = document.getElementById('speakers');
 const submitButton = document.getElementById('submitVote');
-const host = "http://localhost:5000"; // Update this with your backend's URL
 
-// Fetch speakers from the server
 async function fetchSpeakers() {
     const response = await fetch(host + "/speakers", {
         headers: {
-            'ngrok-skip-browser-warning': 'true'
+            'ngrok-skip-browser-warning': 'true',
+            'bypass-tunnel-reminder': 'true'
         }
     });
     speakers = await response.json();
@@ -63,7 +62,8 @@ async function submitVotes(event) {
         method: 'POST',
         headers: {
             'ngrok-skip-browser-warning': 'true',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'bypass-tunnel-reminder' : 'true'
         },
         body: JSON.stringify({ votes })
     });
