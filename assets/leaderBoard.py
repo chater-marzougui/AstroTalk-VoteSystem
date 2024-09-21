@@ -134,12 +134,13 @@ def submit_bureau_vote():
     data = request.json
     with open(speakers_file, 'r') as file:
         spk = json.load(file)
-    vote = data['vote']
-    speaker_id = data['speaker']
-    for speaker in spk['speakers']:
-        if speaker['Id'] == speaker_id:
-            speaker['Bureau Votes'][vote] += 1
-            break
+    votes = data['votes']
+    for vote in votes:
+        speaker_id = vote['Id']
+        for speaker in spk['speakers']:
+            if speaker['Id'] == speaker_id:
+                speaker['Bureau Votes'] = vote['Bureau Votes']
+                break
     with open(speakers_file, 'w') as file:
         json.dump(spk, file)
     return 'Vote submitted successfully!', 200
@@ -175,8 +176,5 @@ def start_mdns_service():
     print(f"mDNS service started. Server accessible via 'my-flask-server.local'.")
 
 if __name__ == '__main__':
-    # Start the mDNS service
     start_mdns_service()
-
-    # Start the Flask server
     app.run(debug=True, host='0.0.0.0', port=5000)

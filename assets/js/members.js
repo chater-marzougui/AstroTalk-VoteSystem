@@ -4,7 +4,7 @@ const speakersID = document.getElementById('speakers');
 const submitButton = document.getElementById('submitVote');
 let selectedSpeaker = null;
 
-const host = "https://0cdc-197-240-127-17.ngrok-free.app";
+const host = "http://localhost:5000";
 
 
 async function fetchSpeakers() {
