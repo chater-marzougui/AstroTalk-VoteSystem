@@ -11,6 +11,20 @@ body {
     overflow: hidden;
 }
 
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+}
+
+.row img {
+    width: 80%;
+    max-width: 300px;
+    padding: 20px 0;
+}
+
 .rowAbs {
     display: flex;
     position: absolute;
@@ -22,6 +36,7 @@ body {
 
 .rowAbs img {
     width: 80%;
+    max-width: 300px;
     padding: 150px 0;
 }
 

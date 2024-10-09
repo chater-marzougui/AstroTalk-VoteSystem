@@ -10,6 +10,12 @@ body {
     background-color: #1b2735;
 }
 
+@media screen and (max-width: 600px) {
+    .toDel {
+        display: none;
+    }
+}
+
 .row {
     display: flex;
     flex-direction: row;

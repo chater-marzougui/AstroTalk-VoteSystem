@@ -11,7 +11,6 @@ async function fetchSpeakers() {
     const response = await fetch(host + "/speakers", {
         headers: {
             'ngrok-skip-browser-warning': 'true',
-            'Content-Type': 'application/json',
             'bypass-tunnel-reminder': 'true'
         }
     });
@@ -46,7 +45,6 @@ async function enterPresentation() {
         method: 'POST',
         headers: new Headers({
             "ngrok-skip-browser-warning": "69420",
-            'Content-Type': 'application/json',
             'bypass-tunnel-reminder': 'true'
           }),
         body: JSON.stringify({
@@ -61,6 +59,7 @@ async function submitVote() {
         return;
     }
 
+    console.log("Selected speaker:", selectedSpeaker);
     const response = await fetch(host + '/member-vote', {
         method: 'POST',
         headers: new Headers({
@@ -107,20 +106,19 @@ async function fetchSpeakersAndLoad() {
         `;
         speakersID.appendChild(speakerDiv);
     });
-
     document.querySelectorAll('input[name="vote"]').forEach(input => {
         input.addEventListener('change', (event) => {
             selectedSpeaker = event.target.value;
             submitButton.disabled = false;
         });
     });
-    
+
     loadingScreen.style.display = "none";
     showWelcomeMessage();
 
-
     document.body.style.overflow = "auto";
-    submitButton.addEventListener('click', submitVote);
 }
+
+submitButton.addEventListener('click', submitVote);
 
 fetchSpeakersAndLoad();
