@@ -10,6 +10,21 @@ body {
     background-color: #1b2735;
 }
 
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .leaderboard {
     width: 80%;
     max-width: 600px;
@@ -41,14 +56,11 @@ body {
 #result {
     display: flex;
     background-color: rgba(255, 255, 255, 0);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     flex-direction: row;
     height: 550px;
+    width: 550px;
     justify-content: center;
     padding: 20px;
-    padding-bottom: 40px;
-    max-width: 800px;
-    width: 50%;
     margin: 10px;
     margin-top: 30px;
 }
@@ -65,7 +77,15 @@ body {
     margin-top: 30px;
 }
 
-/* canvas {
-    margin-top: 20px;
-    width: 200px;
-} */
+.QrcodeImage {
+    margin-right: 220px;
+    padding: 0 30px;
+}
+
+.row .spk-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-left: 20px;
+    padding: 0 30px;
+}

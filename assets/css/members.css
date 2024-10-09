@@ -6,8 +6,12 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: auto;
-    background-color: #f0f0f0;
+    height: fit-content;
+    background-color: #1b2735;
+}
+
+h2, h3, label {
+    color: aliceblue;
 }
 
 #speakers {
@@ -49,7 +53,7 @@ label {
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-    margin-top: 20px;
+    margin-bottom: 50px;
 }
 
 #submitVote:disabled {
