@@ -61,6 +61,50 @@ label {
     cursor: not-allowed;
 }
 
+
+.custom-radio {
+    position: relative;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+/* Hide the default radio button */
+input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    position: absolute;
+    left: -9999px; /* Move it off-screen */
+}
+
+/* Style for the checked radio button */
+input[type="radio"]:checked + .custom-radio {
+    background-color: #007bff; /* Green when selected */
+    border-color: #007bff;
+}
+
+/* Inner dot for checked radio */
+input[type="radio"]:checked + .custom-radio::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+/* Add hover effect */
+.custom-radio:hover {
+    border-color: #777;
+}
+
 alert {
     color: red;
     font-size: 16px;

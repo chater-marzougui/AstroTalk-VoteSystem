@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <h3>${speaker.project}</h3>
             <label>
                 <input type="radio" name="vote" value="${speaker.Id}" />
+                <span class="custom-radio"></span>
                 Vote for ${speaker.name}
             </label>
         `;

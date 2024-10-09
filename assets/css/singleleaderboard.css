@@ -77,15 +77,24 @@ body {
     margin-top: 30px;
 }
 
-.QrcodeImage {
+.column-img {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     margin-right: 220px;
     padding: 0 30px;
+    row-gap: 50px;
+}
+
+.logo {
+    width: 300px;
+    margin: 10px;
 }
 
 .row .spk-img {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
-    margin-left: 20px;
-    padding: 0 30px;
+    margin-left: 24px;
 }
