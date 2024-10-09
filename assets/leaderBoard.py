@@ -13,21 +13,6 @@ votes_list = dict()
 internal_IP_voters = dict()
 speakers_file = 'speakers.json'
 
-# speaker structure:
-{
-    "Id": 1,
-    "name": "Karim Laamouri",
-    "photo": "assets/images/karim-laamouri.jpg",
-    "project": "Morning Stars",
-    "Bureau Votes": {
-    "Technical": 5,
-    "Presentation": 8,
-    "Posture": 2,
-    "depth of knowledge": 10
-    },
-    "Member Votes": 11
-},
-
 @app.route('/add-speaker', methods=['POST'])
 def add_speaker():
     data = request.json
@@ -45,9 +30,7 @@ def add_speaker():
         "project": data['project'],
         "Bureau Votes": {
             "Technical": 0,
-            "Presentation": 0,
-            "Posture": 0,
-            "depth of knowledge": 0
+            "Non-Technical": 0
         },
         "Member Votes": 0
     }

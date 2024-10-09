@@ -21,16 +21,10 @@ async function fetchSpeakers() {
             <img src="${speaker.photo}" alt="${speaker.name}">
             <h3>${speaker.project}</h3>
             <label for="technical-${speaker.Id}">Technical: 
-                <input type="number" id="technical-${speaker.Id}" name="technical" min="0" max="10" step="0.1">
+                <input type="number" id="technical-${speaker.Id}" name="technical" min="0" max="20" step="0.25">
             </label><br>
-            <label for="presentation-${speaker.Id}">Presentation: 
-                <input type="number" id="presentation-${speaker.Id}" name="presentation" min="0" max="10" step="0.1">
-            </label><br>
-            <label for="posture-${speaker.Id}">Posture: 
-                <input type="number" id="posture-${speaker.Id}" name="posture" min="0" max="10" step="0.1">
-            </label><br>
-            <label for="knowledge-${speaker.Id}">Depth of Knowledge: 
-                <input type="number" id="knowledge-${speaker.Id}" name="knowledge" min="0" max="10" step="0.1">
+            <label for="non-technical-${speaker.Id}">Non-Technical: 
+                <input type="number" id="non-technical-${speaker.Id}" name="non-technical" min="0" max="20" step="0.25">
             </label>
         `;
 
@@ -50,9 +44,7 @@ async function submitVotes(event) {
             Id: speaker.Id,
             "Bureau Votes": {
                 "Technical": parseFloat(document.getElementById(`technical-${speaker.Id}`).value) || 0,
-                "Presentation": parseFloat(document.getElementById(`presentation-${speaker.Id}`).value) || 0,
-                "Posture": parseFloat(document.getElementById(`posture-${speaker.Id}`).value) || 0,
-                "depth of knowledge": parseFloat(document.getElementById(`knowledge-${speaker.Id}`).value) || 0
+                "Non-Technical": parseFloat(document.getElementById(`non-technical-${speaker.Id}`).value) || 0,
             }
         };
     });

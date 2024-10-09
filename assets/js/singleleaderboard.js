@@ -26,9 +26,7 @@ async function updateSpeakersVisualization() {
     speakersData.speakers.forEach(speaker => {
         labels.push(speaker.name);
         const bureauTotal = speaker['Bureau Votes']['Technical'] +
-                            speaker['Bureau Votes']['Presentation'] +
-                            speaker['Bureau Votes']['Posture'] +
-                            speaker['Bureau Votes']['depth of knowledge'];
+                            speaker['Bureau Votes']['Non-Technical'];
         const normalizedBureau = bureauTotal;
         const normalizedMembers = 60 / totalMembers * speaker['Member Votes'];
 
@@ -53,12 +51,12 @@ async function updateSpeakersVisualization() {
                     {
                         label: 'Bureau Votes',
                         data: bureauVotes,
-                        backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                        backgroundColor: 'rgba(153, 102, 255, 0.8)',
                     },
                     {
                         label: 'Member Votes',
                         data: memberVotes,
-                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.8)',
                     }
                 ]
             },
@@ -66,12 +64,24 @@ async function updateSpeakersVisualization() {
                 scales: {
                     x: {
                         stacked: true,
+                        ticks: {
+                            color: 'white', // Color of the x-axis labels
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.2)', // Color of the x-axis grid lines
+                        },
                     },
                     y: {
                         stacked: true,
                         beginAtZero: true,
                         min: 0,
-                        max: 100,  
+                        max: 100,
+                        ticks: {
+                            color: 'white', // Color of the y-axis labels
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.2)', // Color of the y-axis grid lines
+                        },
                     }
                 },
                 responsive: true,
@@ -79,8 +89,15 @@ async function updateSpeakersVisualization() {
                     title: {
                         display: true,
                         text: 'Speakers Voting Comparison',
-                    }
-                }
+                        color: 'white', // Color of the title
+                    },
+                    legend: {
+                        labels: {
+                            color: 'white', // Color of the legend labels
+                        },
+                    },
+                },
+                backgroundColor: 'black' // Background color for the chart area
             }
         });
     }
