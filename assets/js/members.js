@@ -1,5 +1,9 @@
 const speakersID = document.getElementById('speakers');
 const submitButton = document.getElementById('submitVote');
+const welcomeScreen = document.getElementById('welcome-screen');
+const loadingScreen = document.getElementById('loading-screen');
+
+
 let selectedSpeaker = null;
 let speakers;
 
@@ -7,12 +11,34 @@ async function fetchSpeakers() {
     const response = await fetch(host + "/speakers", {
         headers: {
             'ngrok-skip-browser-warning': 'true',
+            'Content-Type': 'application/json',
             'bypass-tunnel-reminder': 'true'
         }
     });
     speakers = await response.json();
 }
 
+
+function showWelcomeMessage() {
+    const welcomeMessage = document.getElementById("welcome-message");
+    welcomeScreen.style.display = "flex";
+    let charIndex = 0;
+    const welcomemess = "Welcome to AstroTalk #1";
+    function Wtype() {
+        const displayedText = welcomemess.substring(0, charIndex++)
+
+        welcomeMessage.textContent = displayedText;
+        if (charIndex === welcomemess.length) {
+            setTimeout(() => {
+            welcomeScreen.style.display = "none";
+                return;
+        },1200);
+        }
+        setTimeout(Wtype, 150);
+    }
+
+    Wtype();
+}
 
 async function enterPresentation() {
 
@@ -28,8 +54,6 @@ async function enterPresentation() {
         })
     });
 }
-
-enterPresentation();
 
 async function submitVote() {
     if (!selectedSpeaker) {
@@ -57,8 +81,16 @@ async function submitVote() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
-    await fetchSpeakers();
+async function fetchSpeakersAndLoad() {
+    x = false;
+    while (!x) {
+        try {
+            await fetchSpeakers();
+            x = true;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     speakers.speakers.forEach(speaker => {
         const speakerDiv = document.createElement('div');
@@ -82,5 +114,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             submitButton.disabled = false;
         });
     });
+    
+    loadingScreen.style.display = "none";
+    showWelcomeMessage();
+
+
+    document.body.style.overflow = "auto";
     submitButton.addEventListener('click', submitVote);
-});
+}
+
+fetchSpeakersAndLoad();

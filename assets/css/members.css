@@ -8,7 +8,73 @@ body {
     align-items: center;
     height: fit-content;
     background-color: #1b2735;
+    overflow: hidden;
 }
+
+.rowAbs {
+    display: flex;
+    position: absolute;
+    flex-wrap: wrap-reverse;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.rowAbs img {
+    width: 80%;
+    padding: 150px 0;
+}
+
+
+#welcome-message {
+    font-size: 2em;
+    color: #0935FF;
+    text-align: center;
+}
+
+#vote-message {
+    font-size: 1.5em;
+    color: #0935FF;
+    text-align: center;
+}
+
+
+.spinner {
+    width: 100px;
+    height: 100px;
+    background-image: url('../images/loadingmeteor2.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: spin 2s linear infinite;
+}
+
+.spinner img {
+    transform: rotateZ(180deg);
+    width: 250px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+}
+
+#loading-screen, #welcome-screen {
+    display: flex;
+    position: absolute;
+    overflow: hidden;
+    z-index: 5002;
+    justify-content: center;
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    top: 0;
+}
+
+#welcome-screen {
+    display: none;
+}
+
 
 h2, h3, label {
     color: aliceblue;
@@ -57,7 +123,8 @@ label {
 }
 
 #submitVote:disabled {
-    background-color: #ccc;
+    background-color: #918080;
+    color: rgb(36, 178, 178);
     cursor: not-allowed;
 }
 
