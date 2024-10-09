@@ -11,6 +11,11 @@ body {
     overflow: hidden;
 }
 
+/* hide scroll bar */
+body::-webkit-scrollbar {
+    display: none;
+}
+
 .row {
     display: flex;
     flex-direction: row;
