@@ -61,8 +61,11 @@ def get_voter_ip():
 def enter_presentation():
     voter_ip = get_voter_ip()
     data = request.json
+    with open(speakers_file, 'r') as file:
+        speakers = json.load(file)
+        
+    numberOfSpeakers = speakers['speakers'].__len__()
     spk = data['speaker']
-    numberOfSpeakers = len(spk)
 
     if voter_ip not in internal_IP_voters.keys():
         dic = {
@@ -89,7 +92,6 @@ def submit_vote():
         spk = json.load(file)
     vote = data['speaker']
     voter_ip = get_voter_ip()
-    print(data)
     
     # if voter_ip in internal_IP_voters and check_voter_saw_everything(voter_ip):
     if voter_ip in internal_IP_voters:
@@ -134,30 +136,5 @@ def get_speakers():
         speakers = json.load(file)
     return jsonify(speakers)
 
-def start_mdns_service():
-    """Start mDNS service to broadcast the server IP on the local network."""
-    zeroconf = Zeroconf()
-
-    # Get local IP address
-    hostname = socket.gethostname()
-    print(f"Hostname: {hostname}")
-    local_ip = socket.gethostbyname(hostname)
-
-    # Set up service info for mDNS
-    service_info = ServiceInfo(
-        type_="_http._tcp.local.",  # Service type
-        name="My Flask Server._http._tcp.local.",
-        port=5000,
-        
-        addresses=[socket.inet_aton(local_ip)],
-        server="hi.local.",
-        
-    )
-
-    # Register the service
-    zeroconf.register_service(service_info)
-    print(f"mDNS service started. Server accessible via 'my-flask-server.local'.")
-
 if __name__ == '__main__':
-    start_mdns_service()
     app.run(debug=True, host='0.0.0.0', port=5000)

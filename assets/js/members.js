@@ -3,6 +3,10 @@ const submitButton = document.getElementById('submitVote');
 const welcomeScreen = document.getElementById('welcome-screen');
 const loadingScreen = document.getElementById('loading-screen');
 
+// scroll to top
+window.onbeforeunload = function () {
+    window.scrollTo(0, 0);
+}
 
 let selectedSpeaker = null;
 let speakers;
@@ -18,7 +22,7 @@ async function fetchSpeakers() {
 }
 
 
-function showWelcomeMessage() {
+async function showWelcomeMessage() {
     const welcomeMessage = document.getElementById("welcome-message");
     welcomeScreen.style.display = "flex";
     let charIndex = 0;
@@ -30,6 +34,7 @@ function showWelcomeMessage() {
         if (charIndex === welcomemess.length) {
             setTimeout(() => {
             welcomeScreen.style.display = "none";
+            document.body.style.overflow = "auto";
                 return;
         },1200);
         }
@@ -119,9 +124,8 @@ async function fetchSpeakersAndLoad() {
     enterPresentation();
 
     loadingScreen.style.display = "none";
-    showWelcomeMessage();
+    await showWelcomeMessage();
 
-    document.body.style.overflow = "auto";
 }
 
 submitButton.addEventListener('click', submitVote);
