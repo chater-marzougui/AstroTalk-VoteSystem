@@ -40,18 +40,20 @@ function showWelcomeMessage() {
 }
 
 async function enterPresentation() {
-
     await fetch(host + '/enter-presentation', {
         method: 'POST',
-        headers: new Headers({
+        headers: {
+            "Content-Type": "application/json",  // Ensure the Content-Type is set to application/json
             "ngrok-skip-browser-warning": "69420",
-            'bypass-tunnel-reminder': 'true'
-          }),
+            "bypass-tunnel-reminder": "true"
+        },
         body: JSON.stringify({
-            speaker: "Speaker 1"
+            speaker: "Speaker 1"  // Send the data as a JSON string
         })
     });
 }
+
+enterPresentation();
 
 async function submitVote() {
     if (!selectedSpeaker) {
@@ -112,6 +114,7 @@ async function fetchSpeakersAndLoad() {
             submitButton.disabled = false;
         });
     });
+    enterPresentation();
 
     loadingScreen.style.display = "none";
     showWelcomeMessage();

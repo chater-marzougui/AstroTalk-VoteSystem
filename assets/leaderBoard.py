@@ -89,7 +89,7 @@ def submit_vote():
         spk = json.load(file)
     vote = data['speaker']
     voter_ip = get_voter_ip()
-    print(type(vote))
+    print(data)
     
     # if voter_ip in internal_IP_voters and check_voter_saw_everything(voter_ip):
     if voter_ip in internal_IP_voters:

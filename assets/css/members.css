@@ -168,6 +168,12 @@ input[type="radio"] {
     left: -9999px; /* Move it off-screen */
 }
 
+@media screen and (max-width: 600px) {
+    .toDel {
+        display: none;
+    }
+}
+
 /* Style for the checked radio button */
 input[type="radio"]:checked + .custom-radio {
     background-color: #007bff; /* Green when selected */
