@@ -56,6 +56,7 @@ async function enterPresentation() {
 enterPresentation();
 
 async function submitVote() {
+    submitButton.style.display = "none";
     if (!selectedSpeaker) {
         alert("Please select a speaker to vote for!");
         return;
@@ -78,6 +79,7 @@ async function submitVote() {
     if (response.ok) {
         alert("Your vote has been submitted successfully!");
     } else {
+        submitButton.style.display = "flex";
         alert("Error submitting vote. Please try again.");
     }
 }
