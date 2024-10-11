@@ -1,8 +1,8 @@
 import json
-from flask import Flask, request, jsonify, abort 
-from flask_cors import CORS, cross_origin
-from flask_socketio import SocketIO, emit
-from zeroconf import Zeroconf, ServiceInfo
+from flask import Flask, request, jsonify, abort  # type: ignore
+from flask_cors import CORS, cross_origin # type: ignore
+from flask_socketio import SocketIO, emit # type: ignore
+from zeroconf import Zeroconf, ServiceInfo # type: ignore
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*") 
@@ -26,21 +26,27 @@ def handle_connect():
 def change_time(data):
     global endTime
     endTime = data['endTime']
-    print(endTime)
+    print('Time changed to:', endTime)
+    socketio.emit('endTime', data)
     
+
+@socketio.on('getTimer')
+def get_time():
+    global endTime
+    socketio.emit('endTime', {'endTime': endTime})
 
 @app.route('/add-speaker', methods=['POST'])
 def add_speaker():
     data = request.json
     with open(speakers_file, 'r') as file:
         spk = json.load(file)
-    id = 0
+    last_id = 0
     for speaker in spk['speakers']:
-        if speaker['Id'] > id:
-            id = speaker['Id']
+        if speaker['Id'] > last_id:
+            last_id = speaker['Id']
             
     speaker = {
-        "Id": id + 1,
+        "Id": last_id + 1,
         "name": data['name'],
         "photo": data['photo'],
         "project": data['project'],

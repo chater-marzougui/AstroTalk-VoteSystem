@@ -8,33 +8,35 @@ const socket = io(host , {
 const timerElement = document.getElementById('timer');
 const timerContainerElement = document.getElementById('timer-container');
 
-let timerRunning = true;
+let timerRunning = false;
 let timerStarted = false;
 
 // Timer setup
-let totalTime = 5 * 60; // 5 minutes in seconds
+const totalTime = 5 ; // 5 minutes
 
 function startTimer() {
     timerRunning = true;
     // sends the end time to the server
-    x = { endTime: new Date().getTime() + totalTime * 1000 };
-    console.log(x);
-    socket.emit('timer', x);
+    
+    let endTime = new Date().getTime() + totalTime * 60 * 1000 + 1000;
+    socket.emit('timer', { endTime: endTime});
+    // setInterval to update the timer every second
+    const timerElement = document.getElementById('timer');
     const timerInterval = setInterval(() => {
         if (!timerRunning) {
             clearInterval(timerInterval);
             return;
         }
-        if (totalTime <= 0) {
+        if (endTime <= new Date().getTime()) {
             clearInterval(timerInterval);
             timerRunning = false;
         } else {
-            totalTime--;
-            const minutes = Math.floor(totalTime / 60);
-            const seconds = totalTime % 60;
+            const timeLeft = Math.floor((endTime - new Date().getTime()) / 1000);
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
             timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
-    }, 1000); // Update every second
+    }, 500); // Update every second
 }
 
 timerContainerElement.addEventListener('click', function() {
@@ -92,7 +94,7 @@ async function updateSpeakersVisualization() {
         const dataLabelsPlugin = {
             id: 'dataLabelsPlugin',
             afterDatasetsDraw(chart) {
-                const {ctx, scales: {x, y}} = chart;
+                const {ctx, scales: { y}} = chart;
         
                 chart.data.labels.forEach((label, index) => {
                     // Sum the values from both datasets for this index
