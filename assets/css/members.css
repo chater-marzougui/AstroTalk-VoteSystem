@@ -32,17 +32,18 @@ body::-webkit-scrollbar {
 
 .rowAbs {
     display: flex;
+    flex-direction: row;
     position: absolute;
     flex-wrap: wrap-reverse;
-    flex-direction: row;
     justify-content: space-around;
+    align-items: center;
     width: 100%;
 }
 
 .rowAbs img {
     width: 80%;
-    max-width: 300px;
-    padding: 150px 0;
+    max-width: 320px;
+    height: fit-content;
 }
 
 

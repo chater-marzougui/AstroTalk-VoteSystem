@@ -33,7 +33,8 @@ def change_time(data):
 @socketio.on('getTimer')
 def get_time():
     global endTime
-    socketio.emit('endTime', {'endTime': endTime})
+    print('Time requested:', endTime)
+    socketio.emit('setTime', { "endTime": endTime})
 
 @app.route('/add-speaker', methods=['POST'])
 def add_speaker():

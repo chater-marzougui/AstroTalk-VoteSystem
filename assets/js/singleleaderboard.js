@@ -14,11 +14,12 @@ let timerStarted = false;
 // Timer setup
 const totalTime = 5 ; // 5 minutes
 
-function startTimer() {
+function startTimer(endTime = null) {
     timerRunning = true;
     // sends the end time to the server
-    
-    let endTime = new Date().getTime() + totalTime * 60 * 1000 + 1000;
+    if (!endTime) {
+        endTime = new Date().getTime() + totalTime * 60 * 1000 + 1000;
+    }
     socket.emit('timer', { endTime: endTime});
     // setInterval to update the timer every second
     const timerElement = document.getElementById('timer');
@@ -184,7 +185,6 @@ async function updateSpeakersVisualization() {
     }
 }
 
-
 // socket on new speaker
 socket.on('connect', () => {
     console.log('Connected to WebSocket server');
@@ -194,6 +194,15 @@ socket.on('update_speakers', async (data) => {
     speakers = data;
     if (timerRunning) {
         updateSpeakersVisualization();
+    }
+});
+
+socket.emit('getTimer', () => {});
+
+socket.on('setTime', (data) => {
+    console.log(data);
+    if (data.endTime >= new Date().getTime()) {
+        startTimer(data.endTime);
     }
 });
 

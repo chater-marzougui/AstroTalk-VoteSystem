@@ -101,9 +101,13 @@ async function sendVote() {
     });
     if (response.ok) {
         document.cookie = `voter_id=${selectedSpeaker}; max-age=172800; path=/;`;
-        alert("Your vote has been submitted successfully!");
         submitButton.style.display = "none";
-        updateVotePhotos();
+        const speakerDiv = document.querySelector(`input[value="${voter_id}"]`).closest('.speaker');
+        if (speakerDiv) {
+            const checkIcon = speakerDiv.querySelector('.check-icon');
+            checkIcon.style.display = 'block'; // Show the check icon
+        }
+        alert("Your vote has been submitted successfully!");
     }
 }
 
@@ -140,7 +144,7 @@ function updateVotePhotos() {
     document.querySelectorAll('input[name="vote"]').forEach(input => {
         input.addEventListener('change', (event) => {
             selectedSpeaker = event.target.value;
-            if (voter_id) {
+            if (voter_id || timeEnded) {
                 if (voter_id === event.target.value) {
                     submitButton.disabled = true;
                 } else {
