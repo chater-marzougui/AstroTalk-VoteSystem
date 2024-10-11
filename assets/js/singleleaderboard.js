@@ -1,6 +1,30 @@
 let speakers, lastSpeakers;
 let speakersChart;
 const entered = document.getElementById('entered');
+const socket = io(host);
+const timerElement = document.getElementById('timer');
+
+let timerRunning = true;
+
+// Timer setup
+let totalTime = 5 * 60; // 5 minutes in seconds
+
+function startTimer() {
+    const timerInterval = setInterval(() => {
+        if (totalTime <= 0) {
+            clearInterval(timerInterval);
+            timerRunning = false;
+            socket.close(); // Stop WebSocket after the timer runs out
+        } else {
+            totalTime--;
+            const minutes = Math.floor(totalTime / 60);
+            const seconds = totalTime % 60;
+            timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+    }, 1000); // Update every second
+}
+
+startTimer();
 
 async function fetchSpeakers() {
     const response = await fetch(host + "/speakers", {
@@ -140,14 +164,15 @@ async function updateSpeakersVisualization() {
     }
 }
 
-setInterval(() => {
-    fetchSpeakers().then(() => {
-        if (JSON.stringify(speakers) === JSON.stringify(lastSpeakers)) {
-            return;
-        }
-        updateSpeakersVisualization();
-        lastSpeakers = speakers;
-    });
-}, 100);
+
+// socket on new speaker
+socket.on('connect', () => {
+    console.log('Connected to WebSocket server');
+});
+
+socket.on('update_speakers', async (data) => {
+    speakers = data;
+    updateSpeakersVisualization();
+});
 
 fetchSpeakers().then(updateSpeakersVisualization);

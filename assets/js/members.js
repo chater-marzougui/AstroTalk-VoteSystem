@@ -68,7 +68,8 @@ async function enterPresentation() {
         headers: {
             "Content-Type": "application/json",  // Ensure the Content-Type is set to application/json
             "ngrok-skip-browser-warning": "69420",
-            "bypass-tunnel-reminder": "true"
+            "bypass-tunnel-reminder": "true",
+            "Access-Control-Allow-Origin": "*"
         },
         body: JSON.stringify({
             speaker: "Speaker 1",
@@ -86,28 +87,29 @@ async function submitVote() {
         return;
     }
 
-    console.log("Selected speaker:", selectedSpeaker);
     const voter_id = generateRandomString();
-    const response = await fetch(host + '/member-vote', {
-        method: 'POST',
-        headers: new Headers({
-            "ngrok-skip-browser-warning": "69420",
-            'Content-Type': 'application/json',
-            'bypass-tunnel-reminder': 'true'
-
-        }),
-        body: JSON.stringify({
-            speaker: selectedSpeaker,
-            voter_id: voter_id
-        })
-    });
-
-    if (response.ok) {
+    try {
+        const response = await fetch(host + '/member-vote', {
+            method: 'POST',
+            headers: new Headers({
+                "ngrok-skip-browser-warning": "69420",
+                'Content-Type': 'application/json',
+                'bypass-tunnel-reminder': 'true'
+    
+            }),
+            body: JSON.stringify({
+                speaker: selectedSpeaker,
+                voter_id: voter_id
+            })
+        });
+        document.cookie = `voter_id=${selectedSpeaker}; max-age=172800; path=/;`;
         alert("Your vote has been submitted successfully!");
-    } else {
+        submitButton.style.display = "none";
+    } catch (error) {
         submitButton.style.display = "flex";
         alert("Error submitting vote. Please try again.");
     }
+
 }
 
 async function fetchSpeakersAndLoad() {
@@ -118,16 +120,21 @@ async function fetchSpeakersAndLoad() {
             await fetchSpeakers();
             x = true;
         } catch (error) {
-            console.log(error);
+            console.log(error.message);
         }
     }
 
     speakers.speakers.forEach(speaker => {
         const speakerDiv = document.createElement('div');
         speakerDiv.classList.add('speaker');
+        
+        // Add an additional container for the photo to support the checkmark overlay
         speakerDiv.innerHTML = `
             <h2>${speaker.name}</h2>
-            <img src="${speaker.photo}" alt="${speaker.name}">
+            <div class="photo-container">
+                <img class="speaker" src="${speaker.photo}" alt="${speaker.name}">
+                <span class="check-icon" style="display: none;">&#x2714;</span> <!-- Hidden initially -->
+            </div>
             <h3>${speaker.project}</h3>
             <label>
                 <input type="radio" name="vote" value="${speaker.Id}" />
@@ -137,16 +144,40 @@ async function fetchSpeakersAndLoad() {
         `;
         speakersID.appendChild(speakerDiv);
     });
+    
+    loadingScreen.style.display = "none";
+    // Check if the user has already voted
+    
+    const voter_id_cookie = document.cookie.split(';').find(item => item.trim().startsWith('voter_id='));
+    let voter_id;
+    if (voter_id_cookie) {
+        voter_id = voter_id_cookie.trim().split('=')[1];
+        
+        const speakerDiv = document.querySelector(`input[value="${voter_id}"]`).closest('.speaker');
+        if (speakerDiv) {
+            const checkIcon = speakerDiv.querySelector('.check-icon');
+            checkIcon.style.display = 'block'; // Show the check icon
+        }
+    }
     document.querySelectorAll('input[name="vote"]').forEach(input => {
         input.addEventListener('change', (event) => {
+            // if the speaker want to change his vote he can do it
             selectedSpeaker = event.target.value;
-            submitButton.disabled = false;
+            if (voter_id) {
+                if (voter_id === event.target.value) {
+                    submitButton.disabled = true;
+                } else {
+                    submitButton.disabled = false;
+                    submitButton.style.display = "flex";
+                    submitButton.textContent = "Change Vote";
+                }
+            } else {
+                submitButton.disabled = false;
+            }
         });
     });
-
-    loadingScreen.style.display = "none";
     await showWelcomeMessage();
-
+    
 }
 
 submitButton.addEventListener('click', submitVote);

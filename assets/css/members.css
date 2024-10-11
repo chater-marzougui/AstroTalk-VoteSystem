@@ -100,6 +100,22 @@ h2, h3, label {
     color: aliceblue;
 }
 
+.photo-container {
+    display: flex;
+}
+
+.check-icon {
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    background-color: rgba(0, 255, 0, 0.3);
+    color: rgb(3, 255, 49);
+    border-radius: 50%;
+    font-size: 160px;
+    display: none;
+}
+
+
 #speakers {
     display: flex;
     flex-wrap: wrap;
@@ -124,7 +140,6 @@ h2, h3, label {
     width: 250px;
     height: 250px;
     border-radius: 50%;
-    margin: 10px;
     object-fit: cover;
 }
 

@@ -1,13 +1,21 @@
 import json
-from flask import Flask, request, jsonify, abort # type: ignore
-from flask_cors import CORS # type: ignore
-from zeroconf import Zeroconf, ServiceInfo # type: ignore
+from flask import Flask, request, jsonify, abort
+from flask_cors import CORS, cross_origin
+from flask_socketio import SocketIO, emit  # Import SocketIO and emit
+from zeroconf import Zeroconf, ServiceInfo
 
 app = Flask(__name__)
+socketio = SocketIO(app, cors_allowed_origins="*") 
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 internal_IP_voters = dict()
 speakers_file = 'speakers.json'
+
+# socket on connect print message
+@socketio.on('connect')
+def handle_connect():
+    print('Client connected')
+    
 
 @app.route('/add-speaker', methods=['POST'])
 def add_speaker():
@@ -32,7 +40,7 @@ def add_speaker():
     }
     spk['speakers'].append(speaker)
     with open(speakers_file, 'w') as file:
-        json.dump(spk, file)
+        json.dump(spk, file)        
     return jsonify(speaker), 201
 
 @app.route('/delete-speaker/<int:speaker_id>', methods=['DELETE'])
@@ -48,15 +56,17 @@ def delete_speaker(speaker_id):
     return abort(404, "Speaker not found")
 
 @app.route('/enter-presentation', methods=['POST'])
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def enter_presentation():
     data = request.json
         
     spk = data['speaker']
     voter_id = data['voter_id']
     
+    with open(speakers_file, 'r') as file:
+        speakers = json.load(file)
+        
     if voter_id not in internal_IP_voters.keys():
-        with open(speakers_file, 'r') as file:
-            speakers = json.load(file)
             
         numberOfSpeakers = speakers['speakers'].__len__()
         dic = {
@@ -65,8 +75,11 @@ def enter_presentation():
         for i in range(1, numberOfSpeakers + 1):
             dic[f"Speaker {i}"] = False
         internal_IP_voters[voter_id] = dic
-
+    else:
+        speakers['entered'] = len(internal_IP_voters)
+        socketio.emit('update_speakers', speakers)
     internal_IP_voters[voter_id][spk] = True
+    
     return jsonify({"message": f"IP {voter_id} registered."}), 200
 
 def check_voter_saw_everything(voter_ip):
@@ -102,6 +115,10 @@ def submit_vote():
     with open(speakers_file, 'w') as file:
         json.dump(spk, file)
 
+    spk['entered'] = len(internal_IP_voters)
+    
+    socketio.emit('update_speakers', spk)
+    
     return 'Vote submitted successfully!', 200
 
 
@@ -119,6 +136,7 @@ def submit_bureau_vote():
                 break
     with open(speakers_file, 'w') as file:
         json.dump(spk, file)
+    socketio.emit('update_speakers', spk)
     return 'Vote submitted successfully!', 200
 
 @app.route('/speakers', methods=['GET'])
@@ -130,4 +148,4 @@ def get_speakers():
     return jsonify(speakers)
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    socketio.run(app, debug=True, host='0.0.0.0', port=5000, allow_unsafe_werkzeug=True)

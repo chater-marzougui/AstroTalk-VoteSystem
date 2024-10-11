@@ -49,8 +49,6 @@ async function submitVotes(event) {
         };
     });
 
-    console.log(votes);
-
     // Send the votes to the backend
     const response = await fetch(host + '/bureau-vote', {
         method: 'POST',

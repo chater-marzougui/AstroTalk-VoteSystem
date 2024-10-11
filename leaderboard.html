@@ -6,6 +6,7 @@
     <title>LeaderBoard</title>
     <link rel="stylesheet" href="./assets/css/singleleaderboard.css">
     <link rel="stylesheet" href="./assets/css/meteor.css">
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
 </head>
 <body>
     <div class="row">
@@ -14,8 +15,13 @@
             <img class="logo" src="./assets/images/grss-logo.webp" alt="Logo">
         </div>
         <div class="voters-col">
-            <h2>Voted / Voters :</h2>
-            <h2 id="entered">99/100</h2>
+            <div class="timer-container">
+                <div class="timer" id="timer">05:00</div>
+            </div>
+            <div style="text-align: center;">
+                <h2>Voted / Voters :</h2>
+                <h2 id="entered">0 / 0</h2>
+            </div>
         </div>
         <div class="column">
             <div id="result">
