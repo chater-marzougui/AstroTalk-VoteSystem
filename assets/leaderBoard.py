@@ -1,7 +1,7 @@
 import json
-from flask import Flask, request, jsonify, abort
+from flask import Flask, request, jsonify, abort 
 from flask_cors import CORS, cross_origin
-from flask_socketio import SocketIO, emit  # Import SocketIO and emit
+from flask_socketio import SocketIO, emit
 from zeroconf import Zeroconf, ServiceInfo
 
 app = Flask(__name__)

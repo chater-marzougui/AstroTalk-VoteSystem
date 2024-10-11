@@ -1,7 +1,10 @@
 let speakers, lastSpeakers;
 let speakersChart;
 const entered = document.getElementById('entered');
-const socket = io(host);
+const socket = io(host , {
+    transports: ['websocket']
+});
+
 const timerElement = document.getElementById('timer');
 const timerContainerElement = document.getElementById('timer-container');
 
@@ -187,7 +190,9 @@ socket.on('connect', () => {
 
 socket.on('update_speakers', async (data) => {
     speakers = data;
-    updateSpeakersVisualization();
+    if (timerRunning) {
+        updateSpeakersVisualization();
+    }
 });
 
 fetchSpeakers().then(updateSpeakersVisualization);

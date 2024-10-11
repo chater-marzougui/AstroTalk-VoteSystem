@@ -150,7 +150,7 @@ async function fetchSpeakersAndLoad() {
 
     endTime = speakers.endTime;
     console.log(endTime);
-    if (endTime >= new Date().getTime()) {
+    if (endTime >= 0) {
         
         timerContainerElement.style.display = "flex";
         submitButton.style.display = "flex";
