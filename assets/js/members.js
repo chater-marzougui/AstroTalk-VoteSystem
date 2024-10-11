@@ -5,7 +5,7 @@ const loadingScreen = document.getElementById('loading-screen');
 const timerContainerElement = document.getElementById('timer-container');
 const timerElement = document.getElementById('timer');
 
-let timeEnded = false;
+let timeEnded = true;
 
 window.onbeforeunload = function () {
     window.scrollTo(0, 0);
@@ -117,6 +117,7 @@ async function submitVote() {
 }
 
 function startTimer(endTime) {
+    timeEnded = false;
     const timerInterval = setInterval(() => {
         if (endTime < new Date().getTime()) {
             clearInterval(timerInterval);
@@ -203,9 +204,9 @@ async function fetchSpeakersAndLoad() {
                 if (voter_id === event.target.value) {
                     submitButton.disabled = true;
                 } else {
-                    submitButton.disabled = !timeEnded;
+                    submitButton.disabled = timeEnded;
                     submitButton.style.display = "flex";
-                    submitButton.textContent = timeEnded ? "Change Vote" : "Time has ended";
+                    submitButton.textContent = timeEnded ? "Time has ended" : "Change Vote";
                 }
             } else {
                 submitButton.disabled = false;
