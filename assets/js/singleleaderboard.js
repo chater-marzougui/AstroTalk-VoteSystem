@@ -1,5 +1,6 @@
 let speakers, lastSpeakers;
 let speakersChart;
+const entered = document.getElementById('entered');
 
 async function fetchSpeakers() {
     const response = await fetch(host + "/speakers", {
@@ -12,16 +13,18 @@ async function fetchSpeakers() {
 }
 
 async function updateSpeakersVisualization() {
-    let speakersData = speakers;
+    let speakersData = speakers;     
 
     const labels = [];
     const bureauVotes = [];
     const memberVotes = [];
+    const enteredVoters = speakersData['entered'];
     let totalMembers = 0;
-
+    
     speakersData.speakers.forEach(speaker => {
         totalMembers += speaker['Member Votes'];
     });
+    entered.textContent =  `${totalMembers} / ${enteredVoters}`;
 
     speakersData.speakers.forEach(speaker => {
         labels.push(speaker.name);
@@ -42,6 +45,39 @@ async function updateSpeakersVisualization() {
     } else {
         const speakersChartCanvas = document.getElementById('speakersChart');
         const speakersChartCtx = speakersChartCanvas.getContext('2d');
+
+        // Custom plugin to display data labels on top of the bars
+        const dataLabelsPlugin = {
+            id: 'dataLabelsPlugin',
+            afterDatasetsDraw(chart) {
+                const {ctx, scales: {x, y}} = chart;
+        
+                chart.data.labels.forEach((label, index) => {
+                    // Sum the values from both datasets for this index
+                    const bureauVotes = chart.data.datasets[0].data[index];
+                    const memberVotes = chart.data.datasets[1].data[index];
+                    const totalValue = bureauVotes + memberVotes;
+        
+                    // Get the bar element for the topmost dataset (the second one in this case)
+                    const meta1 = chart.getDatasetMeta(1);  // Meta for the second dataset (Member Votes)
+                    const bar = meta1.data[index];
+        
+                    // Get position to place the text above the stacked bar
+                    const xPosition = bar.x;
+                    const yPosition = y.getPixelForValue(totalValue) - 5; // Adjust the yPosition to place the text above the total height of the stacked bars
+        
+                    // Draw the total value on top of the stacked bars
+                    ctx.save();
+                    ctx.fillStyle = 'white'; // Text color
+                    ctx.font = 'bold 12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+                    ctx.fillText(totalValue.toFixed(2), xPosition, yPosition); // Display total value with 2 decimal places
+                    ctx.restore();
+                });
+            }
+        };
+        
 
         speakersChart = new Chart(speakersChartCtx, {
             type: 'bar',
@@ -98,7 +134,8 @@ async function updateSpeakersVisualization() {
                     },
                 },
                 backgroundColor: 'black' // Background color for the chart area
-            }
+            },
+            plugins: [dataLabelsPlugin] // Add the custom plugin here
         });
     }
 }

@@ -3,10 +3,27 @@ const submitButton = document.getElementById('submitVote');
 const welcomeScreen = document.getElementById('welcome-screen');
 const loadingScreen = document.getElementById('loading-screen');
 
-// scroll to top
 window.onbeforeunload = function () {
     window.scrollTo(0, 0);
 }
+
+function generateRandomString() {
+    const astroTalkCookie = document.cookie.split(';').find(item => item.trim().startsWith('astroTalk='));
+
+    if (astroTalkCookie) {
+        return astroTalkCookie.trim().split('=')[1];
+    }
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+';
+    let result = '';
+    const charactersLength = characters.length;
+
+    for (let i = 0; i < 64; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    document.cookie = `astroTalk=${result}; max-age=172800; path=/;`;
+    return result;
+}
+
 
 let selectedSpeaker = null;
 let speakers;
@@ -26,7 +43,7 @@ async function showWelcomeMessage() {
     const welcomeMessage = document.getElementById("welcome-message");
     welcomeScreen.style.display = "flex";
     let charIndex = 0;
-    const welcomemess = "Welcome to AstroTalk #1";
+    const welcomemess = "Welcome to AstroTalk #2.0";
     function Wtype() {
         const displayedText = welcomemess.substring(0, charIndex++)
 
@@ -36,7 +53,7 @@ async function showWelcomeMessage() {
             welcomeScreen.style.display = "none";
             document.body.style.overflow = "auto";
                 return;
-        },1200);
+        },1000);
         }
         setTimeout(Wtype, 150);
     }
@@ -45,6 +62,7 @@ async function showWelcomeMessage() {
 }
 
 async function enterPresentation() {
+    const randomString = generateRandomString();
     await fetch(host + '/enter-presentation', {
         method: 'POST',
         headers: {
@@ -53,7 +71,8 @@ async function enterPresentation() {
             "bypass-tunnel-reminder": "true"
         },
         body: JSON.stringify({
-            speaker: "Speaker 1"  // Send the data as a JSON string
+            speaker: "Speaker 1",
+            voter_id: randomString
         })
     });
 }
@@ -68,6 +87,7 @@ async function submitVote() {
     }
 
     console.log("Selected speaker:", selectedSpeaker);
+    const voter_id = generateRandomString();
     const response = await fetch(host + '/member-vote', {
         method: 'POST',
         headers: new Headers({
@@ -77,7 +97,8 @@ async function submitVote() {
 
         }),
         body: JSON.stringify({
-            speaker: selectedSpeaker
+            speaker: selectedSpeaker,
+            voter_id: voter_id
         })
     });
 
@@ -93,6 +114,7 @@ async function fetchSpeakersAndLoad() {
     x = false;
     while (!x) {
         try {
+            enterPresentation();
             await fetchSpeakers();
             x = true;
         } catch (error) {
@@ -121,7 +143,6 @@ async function fetchSpeakersAndLoad() {
             submitButton.disabled = false;
         });
     });
-    enterPresentation();
 
     loadingScreen.style.display = "none";
     await showWelcomeMessage();

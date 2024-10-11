@@ -27,7 +27,7 @@ body::-webkit-scrollbar {
 .row img {
     width: 80%;
     max-width: 300px;
-    padding: 20px 0;
+    padding-top: 20px;
 }
 
 .rowAbs {
@@ -47,13 +47,13 @@ body::-webkit-scrollbar {
 
 
 #welcome-message {
-    font-size: 2em;
+    font-size: 1.8em;
     color: #0935FF;
     text-align: center;
 }
 
 #vote-message {
-    font-size: 1.5em;
+    font-size: 1.4em;
     color: #0935FF;
     text-align: center;
 }
@@ -106,8 +106,6 @@ h2, h3, label {
     justify-content: center;
     padding: 20px;
     padding-bottom: 40px;
-    margin: 10px;
-    margin-top: 30px;
     text-align: center;
     column-gap: 50px;
 }
@@ -115,8 +113,11 @@ h2, h3, label {
 .speaker {
     display: flex;
     flex-direction: column;
+    width: 300px;
+    text-align: center;
     align-items: center;
     margin-bottom: 20px;
+    justify-content: space-around;
 }
 
 #speakers img {

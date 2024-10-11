@@ -1,15 +1,11 @@
-import random
-import os
 import json
 from flask import Flask, request, jsonify, abort # type: ignore
 from flask_cors import CORS # type: ignore
 from zeroconf import Zeroconf, ServiceInfo # type: ignore
-import socket
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-votes_list = dict()
 internal_IP_voters = dict()
 speakers_file = 'speakers.json'
 
@@ -51,32 +47,27 @@ def delete_speaker(speaker_id):
             return jsonify(speaker), 200
     return abort(404, "Speaker not found")
 
-def get_voter_ip():
-    if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
-        return request.environ['REMOTE_ADDR']
-    else:
-        return request.environ['HTTP_X_FORWARDED_FOR'].split(',')[0].strip()
-
 @app.route('/enter-presentation', methods=['POST'])
 def enter_presentation():
-    voter_ip = get_voter_ip()
     data = request.json
-    with open(speakers_file, 'r') as file:
-        speakers = json.load(file)
         
-    numberOfSpeakers = speakers['speakers'].__len__()
     spk = data['speaker']
-
-    if voter_ip not in internal_IP_voters.keys():
+    voter_id = data['voter_id']
+    
+    if voter_id not in internal_IP_voters.keys():
+        with open(speakers_file, 'r') as file:
+            speakers = json.load(file)
+            
+        numberOfSpeakers = speakers['speakers'].__len__()
         dic = {
             "Vote": ""
         }
         for i in range(1, numberOfSpeakers + 1):
             dic[f"Speaker {i}"] = False
-        internal_IP_voters[voter_ip] = dic
+        internal_IP_voters[voter_id] = dic
 
-    internal_IP_voters[voter_ip][spk] = True
-    return jsonify({"message": f"IP {voter_ip} registered."}), 200
+    internal_IP_voters[voter_id][spk] = True
+    return jsonify({"message": f"IP {voter_id} registered."}), 200
 
 def check_voter_saw_everything(voter_ip):
     for key in internal_IP_voters[voter_ip]:
@@ -91,15 +82,15 @@ def submit_vote():
     with open(speakers_file, 'r') as file:
         spk = json.load(file)
     vote = data['speaker']
-    voter_ip = get_voter_ip()
+    voter_id = data['voter_id']
     
-    # if voter_ip in internal_IP_voters and check_voter_saw_everything(voter_ip):
-    if voter_ip in internal_IP_voters:
+    # if voter_id in internal_IP_voters and check_voter_saw_everything(voter_id):
+    if voter_id in internal_IP_voters:
         for speaker in spk['speakers']:
-            if speaker['Id'] == internal_IP_voters[voter_ip]["Vote"]:
+            if speaker['Id'] == internal_IP_voters[voter_id]["Vote"]:
                 speaker['Member Votes'] -= 1
                 break
-        internal_IP_voters[voter_ip]["Vote"] = int(vote)
+        internal_IP_voters[voter_id]["Vote"] = int(vote)
     else:
         return abort(404, "Not allowed")
     
@@ -134,6 +125,8 @@ def submit_bureau_vote():
 def get_speakers():
     with open(speakers_file, 'r') as file:
         speakers = json.load(file)
+    # add number of people that entered the presentation
+    speakers['entered'] = len(internal_IP_voters)
     return jsonify(speakers)
 
 if __name__ == '__main__':

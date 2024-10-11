@@ -10,6 +10,16 @@ body {
     background-color: #1b2735;
 }
 
+.voters-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+    color: aliceblue;
+}
+
 .row {
     display: flex;
     flex-direction: row;
@@ -82,13 +92,18 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-right: 220px;
-    padding: 0 30px;
+    margin-left: 80px;
+    padding-top: 80px;
     row-gap: 50px;
 }
 
+.QrcodeImage {
+    width: 400px;
+    height: 400px;
+}
+
 .logo {
-    width: 300px;
+    width: 350px;
     margin: 10px;
 }
 
