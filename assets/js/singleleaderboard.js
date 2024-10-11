@@ -3,18 +3,28 @@ let speakersChart;
 const entered = document.getElementById('entered');
 const socket = io(host);
 const timerElement = document.getElementById('timer');
+const timerContainerElement = document.getElementById('timer-container');
 
 let timerRunning = true;
+let timerStarted = false;
 
 // Timer setup
 let totalTime = 5 * 60; // 5 minutes in seconds
 
 function startTimer() {
+    timerRunning = true;
+    // sends the end time to the server
+    x = { endTime: new Date().getTime() + totalTime * 1000 };
+    console.log(x);
+    socket.emit('timer', x);
     const timerInterval = setInterval(() => {
+        if (!timerRunning) {
+            clearInterval(timerInterval);
+            return;
+        }
         if (totalTime <= 0) {
             clearInterval(timerInterval);
             timerRunning = false;
-            socket.close(); // Stop WebSocket after the timer runs out
         } else {
             totalTime--;
             const minutes = Math.floor(totalTime / 60);
@@ -24,7 +34,12 @@ function startTimer() {
     }, 1000); // Update every second
 }
 
-startTimer();
+timerContainerElement.addEventListener('click', function() {
+    if (!timerStarted) { // Ensure timer starts only once
+        startTimer();
+        timerStarted = true;
+    }
+});
 
 async function fetchSpeakers() {
     const response = await fetch(host + "/speakers", {

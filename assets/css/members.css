@@ -104,6 +104,25 @@ h2, h3, label {
     display: flex;
 }
 
+.timer-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #333;
+    border-radius: 15px;
+    width: 180px;
+    height: 60px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.timer {
+    font-size: 3.5em;
+    font-family: monospace;
+    color: #fff;
+    text-align: center;
+}
+
 .check-icon {
     position: absolute;
     width: 250px;

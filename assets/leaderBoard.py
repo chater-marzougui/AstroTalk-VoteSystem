@@ -11,10 +11,22 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 internal_IP_voters = dict()
 speakers_file = 'speakers.json'
 
+
+endTime = 0
 # socket on connect print message
 @socketio.on('connect')
 def handle_connect():
+    with open(speakers_file, 'r') as file:
+        spk = json.load(file)
+        spk['entered'] = len(internal_IP_voters)
+        socketio.emit('update_speakers', spk)
     print('Client connected')
+
+@socketio.on('timer')
+def change_time(data):
+    global endTime
+    endTime = data['endTime']
+    print(endTime)
     
 
 @app.route('/add-speaker', methods=['POST'])
@@ -140,11 +152,13 @@ def submit_bureau_vote():
     return 'Vote submitted successfully!', 200
 
 @app.route('/speakers', methods=['GET'])
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def get_speakers():
     with open(speakers_file, 'r') as file:
         speakers = json.load(file)
     # add number of people that entered the presentation
     speakers['entered'] = len(internal_IP_voters)
+    speakers['endTime'] = endTime
     return jsonify(speakers)
 
 if __name__ == '__main__':

@@ -2,6 +2,10 @@ const speakersID = document.getElementById('speakers');
 const submitButton = document.getElementById('submitVote');
 const welcomeScreen = document.getElementById('welcome-screen');
 const loadingScreen = document.getElementById('loading-screen');
+const timerContainerElement = document.getElementById('timer-container');
+const timerElement = document.getElementById('timer');
+
+let timeEnded = false;
 
 window.onbeforeunload = function () {
     window.scrollTo(0, 0);
@@ -89,7 +93,7 @@ async function submitVote() {
 
     const voter_id = generateRandomString();
     try {
-        const response = await fetch(host + '/member-vote', {
+        await fetch(host + '/member-vote', {
             method: 'POST',
             headers: new Headers({
                 "ngrok-skip-browser-warning": "69420",
@@ -112,6 +116,26 @@ async function submitVote() {
 
 }
 
+function startTimer(endTime) {
+    const timerInterval = setInterval(() => {
+        if (endTime < new Date().getTime()) {
+            clearInterval(timerInterval);
+            timerElement.textContent = "00:00";
+            submitButton.disabled = true;
+            timeEnded = true;
+            submitButton.textContent = "Voting has ended";
+            return;
+        }
+        const timeLeft = Math.floor((endTime - new Date().getTime()) / 1000);
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+    }, 1000); // Update every second
+}
+
+endTime = -1;
+
 async function fetchSpeakersAndLoad() {
     x = false;
     while (!x) {
@@ -122,6 +146,18 @@ async function fetchSpeakersAndLoad() {
         } catch (error) {
             console.log(error.message);
         }
+    }
+
+    endTime = speakers.endTime;
+    console.log(endTime);
+    if (endTime >= new Date().getTime()) {
+        
+        timerContainerElement.style.display = "flex";
+        submitButton.style.display = "flex";
+        startTimer(endTime);
+    } else {
+        timerContainerElement.style.display = "none";
+        submitButton.style.display = "none";
     }
 
     speakers.speakers.forEach(speaker => {
@@ -167,9 +203,9 @@ async function fetchSpeakersAndLoad() {
                 if (voter_id === event.target.value) {
                     submitButton.disabled = true;
                 } else {
-                    submitButton.disabled = false;
+                    submitButton.disabled = !timeEnded;
                     submitButton.style.display = "flex";
-                    submitButton.textContent = "Change Vote";
+                    submitButton.textContent = timeEnded ? "Change Vote" : "Time has ended";
                 }
             } else {
                 submitButton.disabled = false;
