@@ -36,7 +36,7 @@ function createAsteroid() {
 
 document.addEventListener('DOMContentLoaded', () => {
     const starrySky = document.querySelector('.starry-sky');
-    const starCount = 250;
+    const starCount = 300;
 
     for (let i = 0; i < starCount; i++) {
         let star = document.createElement('div');
@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
         star.style.height = `${size}px`;
         star.style.top = `${Math.random() * 97}%`;
         star.style.left = `${Math.random() * 94 + 3}%`;
-        star.style.animationDuration = `${Math.random() * 10 + 12}s`;
-        star.style.animationDelay = `${Math.random() * 15}s`;
+        star.style.animationDuration = `${Math.random() * 5 + 12}s`;
+        star.style.animationDelay = `${Math.random() * 10}s`;
 
         starrySky.appendChild(star);
     }

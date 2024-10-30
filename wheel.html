@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speaker Selection Wheel</title>
+    <link rel="stylesheet" href="./assets/css/wheel.css">
+    <link rel="stylesheet" href="./assets/css/meteor.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AstroTalk #2.0</h1>
+        <h2>AstroTalkers Order</h2>
+        
+        <div class="row">
+            <div id="selectedSpeakers"></div>
+            <div class="col">
+                <div class="wheel-container">
+                    <div class="pointer"></div>
+                    <div class="wheel" id="wheel"></div>
+                </div>
+                <button id="spinButton">Spin the Wheel</button>
+            </div>
+            <div class="logo col">
+                <img src="./assets/images/grss-logo.webp" alt="logo">
+                <img src="./assets/images/IEEE.png" alt="logo">
+            </div>
+        </div>
+
+        <div class="overlay" id="overlay"></div>
+        <div class="selection-dialog" id="selectionDialog">
+            <img id="dialogImage" src="" alt="">
+            <h2 id="dialogName">&nbsp;</h2>
+            <div class="project" id="dialogProject"></div>
+            <button onclick="closeDialog()">Continue</button>
+        </div>
+    </div>
+
+    
+    <div class="starry-sky"></div>
+    <div id="asteroid-container"></div>
+
+    <script src="./assets/js/config.js"></script>
+    <script src="./assets/js/wheel.js"></script>
+    <script src="./assets/js/meteor.js"></script>
+</body>
+</html>

@@ -233,9 +233,3 @@ input[type="radio"]:checked + .custom-radio::after {
 .custom-radio:hover {
     border-color: #777;
 }
-
-alert {
-    color: red;
-    font-size: 16px;
-    margin-top: 10px;
-}
