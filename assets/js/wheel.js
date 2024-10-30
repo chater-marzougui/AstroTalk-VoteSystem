@@ -1,11 +1,10 @@
-
-
 class SpeakerWheel {
     constructor() {
         this.wheel = document.getElementById('wheel');
         this.spinButton = document.getElementById('spinButton');
         this.selectedSpeakerElement = document.getElementById('selectedSpeaker');
         this.selectedSpeakersElement = document.getElementById('selectedSpeakers');
+        this.cardsContainer = document.getElementById('cards-container');
         this.speakers = [];
         this.selectedSpeakers = [];
         this.currentRotation = 0;
@@ -33,6 +32,32 @@ class SpeakerWheel {
                 </div>
             `).join('');
         this.selectedSpeakersElement.style.visibility = this.selectedSpeakers.length > 0 ? 'visible' : 'hidden';
+    }
+
+    renderCards() {
+        document.getElementById('main-row').style.display = 'none';
+        document.getElementById('selectedSpeakers').style.display = 'none';
+        
+        const cardsContainer = document.getElementById('cards-container');
+        cardsContainer.style.display = 'flex';
+    
+        cardsContainer.innerHTML = this.selectedSpeakers
+            .map((speaker, index) => `
+                <div class="card">
+                    <div class="wrapper">
+                        <img src="${speaker.photo}" class="cover-image" />  
+                    </div>
+                    <h3 class="title">${index + 1}. ${speaker.name}</h3>
+                    <img src="${speaker.png}" class="character" />
+                </div>
+            `).join('');
+        // Add animation after a brief delay to ensure DOM is ready
+        requestAnimationFrame(() => {
+            const cards = cardsContainer.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.classList.add('show');
+            });
+        });
     }
 
     showSelectionDialog(winner) {
@@ -109,7 +134,7 @@ class SpeakerWheel {
         const winner = this.speakers[speakerIndex];
         this.selectedSpeakers.push(winner);
         this.speakers.splice(speakerIndex, 1);
-        if(this.speakers.length > 1) this.showSelectionDialog(winner);
+        if(this.speakers.length != 0) this.showSelectionDialog(winner);
         this.renderSelectedSpeakers();
     }
 
@@ -154,13 +179,11 @@ class SpeakerWheel {
         }, 5000);
     }
 }
+const speakerWheel = new SpeakerWheel();
+speakerWheel.init();
 
 function closeDialog() {
-    document.getElementById('selectionDialog').style.display = 'none';
     document.getElementById('overlay').style.display = 'none';
+    document.getElementById('selectionDialog').style.display = 'none';
+    if(speakerWheel.speakers.length === 0 ) speakerWheel.renderCards();
 }
-
-window.onload = () => {
-    const speakerWheel = new SpeakerWheel();
-    speakerWheel.init();
-};

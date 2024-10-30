@@ -164,6 +164,27 @@ h2 {
     transform: rotate(90deg);
 }
 
+.btn {
+    font-weight: 700;
+    font-size: 1.125rem;
+
+    color: aliceblue;
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    background-color: #2563eb;
+    text-decoration: none;
+    margin-right: 30px;
+    background-image: linear-gradient(to left, #2563eb 50%, #971D96 50%);
+    background-size: 200% 100%;
+    background-position: right bottom;
+    transition: all 0.5s ease;
+    cursor: pointer;
+    margin-top: 50px;
+}
+
+.btn:hover {
+    background-position: left bottom;
+}
 button {
     padding: 1rem 2rem;
     font-size: 1.125rem;
