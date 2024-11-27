@@ -4,6 +4,8 @@ const welcomeScreen = document.getElementById('welcome-screen');
 const loadingScreen = document.getElementById('loading-screen');
 const timerContainerElement = document.getElementById('timer-container');
 const timerElement = document.getElementById('timer');
+const welcomeMessage = document.getElementById("welcome-message");
+
 
 const socket = io(host, {
     transports: ['websocket']
@@ -25,6 +27,7 @@ function generateRandomString() {
     if (astroTalkCookie) {
         return astroTalkCookie.trim().split('=')[1];
     }
+    
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+';
     let result = '';
     const charactersLength = characters.length;
@@ -47,11 +50,9 @@ async function fetchSpeakers() {
     speakers = await response.json();
 }
 
-async function showWelcomeMessage() {
-    const welcomeMessage = document.getElementById("welcome-message");
+async function showWelcomeMessage(welcome_Message = "Welcome to AstroTalk #2.0") {
     welcomeScreen.style.display = "flex";
     let charIndex = 0;
-    const welcome_Message = "Welcome to AstroTalk #2.0";
     function WordType() {
         const displayedText = welcome_Message.substring(0, charIndex++)
 
@@ -110,7 +111,6 @@ async function sendVote() {
         alert("Your vote has been submitted successfully!");
     }
 }
-
 
 async function submitVote() {
     if (!selectedSpeaker) {
@@ -193,7 +193,7 @@ async function fetchSpeakersAndLoad() {
             console.log(error.message);
         }
     }
-    
+
     let endTime = speakers.endTime;
     if (endTime >= new Date().getTime()) {
         console.log(endTime);
@@ -245,5 +245,16 @@ socket.on('connect', () => {
 
 submitButton.addEventListener('click', submitVote);
 
-enterPresentation();
-fetchSpeakersAndLoad();
+async function testIncognito(){
+    detectIncognito().then(async (result) => {
+        if (result.isPrivate) {
+            loadingScreen.style.display = "none";
+            welcomeScreen.style.display = "flex";
+            welcomeMessage.textContent = "Please disable incognito\nmode to continue.";
+        } else {
+            fetchSpeakersAndLoad();
+        }
+    });
+}
+
+testIncognito();

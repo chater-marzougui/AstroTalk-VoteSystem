@@ -54,7 +54,14 @@ async function fetchSpeakers() {
             'bypass-tunnel-reminder': 'true'
         }
     });
-    speakers = await response.json();
+
+    if (response.status === 200) {
+        speakers = await response.json();
+    } else {
+        // retry after 5 seconds
+        await new Promise(resolve => setTimeout(resolve, 500));
+        fetchSpeakers();
+    }
 }
 
 async function updateSpeakersVisualization() {
