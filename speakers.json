@@ -1,1 +1,40 @@
-{"speakers": [{"Id": 1, "name": "Oussama Harrabi", "photo": "assets/images/newSpeakers/oussama.png", "png": "./assets/images/newSpeakers/oussama_bg.png", "project": "Space Debris", "Bureau Votes": {"Technical": 5, "Non-Technical": 10}, "Member Votes": 1}, {"Id": 2, "name": "Zeyneb Chouari", "photo": "assets/images/newSpeakers/zeineb.png", "png": "assets/images/newSpeakers/zeineb_bg.png", "project": "Dark Matter and Dark Energy", "Bureau Votes": {"Technical": 15, "Non-Technical": 0}, "Member Votes": 0}, {"Id": 3, "name": "Fourat Boujdaria", "photo": "assets/images/newSpeakers/fourat.png", "png": "assets/images/newSpeakers/fourat_bg.png", "project": "The WOW Signal", "Bureau Votes": {"Technical": 0, "Non-Technical": 5}, "Member Votes": 1}]}
+{
+  "speakers": [
+    {
+      "Id": 1,
+      "name": "Oussama Harrabi",
+      "photo": "assets/images/newSpeakers/oussama.png",
+      "png": "./assets/images/newSpeakers/oussama_bg.png",
+      "project": "Space Debris",
+      "Bureau Votes": {
+        "Technical": 0,
+        "Non-Technical": 0
+      },
+      "Member Votes": 0
+    },
+    {
+      "Id": 2,
+      "name": "Zeyneb Chouari",
+      "photo": "assets/images/newSpeakers/zeineb.png",
+      "png": "assets/images/newSpeakers/zeineb_bg.png",
+      "project": "Dark Matter and Dark Energy",
+      "Bureau Votes": {
+        "Technical": 0,
+        "Non-Technical": 0
+      },
+      "Member Votes": 0
+    },
+    {
+      "Id": 3,
+      "name": "Fourat Boujdaria",
+      "photo": "assets/images/newSpeakers/fourat.png",
+      "png": "assets/images/newSpeakers/fourat_bg.png",
+      "project": "The WOW Signal",
+      "Bureau Votes": {
+        "Technical": 0,
+        "Non-Technical": 0
+      },
+      "Member Votes": 0
+    }
+  ]
+}

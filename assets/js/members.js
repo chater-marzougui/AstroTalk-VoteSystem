@@ -106,6 +106,9 @@ async function sendVote() {
         submitButton.style.display = "none";
         const speakerDiv = document.querySelector(`input[value="${selectedSpeaker}"]`).closest('.speaker');
         if (speakerDiv) {
+            document.querySelectorAll('.check-icon').forEach(icon => {
+                icon.style.display = 'none';
+            });
             const checkIcon = speakerDiv.querySelector('.check-icon');
             checkIcon.style.display = 'block'; // Show the check icon
         }
