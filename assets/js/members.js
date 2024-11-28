@@ -155,6 +155,7 @@ function updateVotePhotos() {
                     submitButton.textContent = endTime > 0 ? submitButton.textContent : "Voting hasn't started yet";
                 }
             } else {
+                submitButton.textContent = "Vote";
                 submitButton.disabled = false;
             }
         });
@@ -247,7 +248,9 @@ async function fetchSpeakersAndLoad() {
 socket.on('endTime', ({ endTime }) => {
     timerContainerElement.style.display = "flex";
     submitButton.style.display = "flex";
+    submitButton.textContent = "Vote";
     startTimer(endTime);
+    updateVotePhotos();
 });
 
 socket.on('connect', () => {
