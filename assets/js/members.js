@@ -104,7 +104,7 @@ async function sendVote() {
     if (response.ok) {
         document.cookie = `voter_id=${selectedSpeaker}; max-age=172800; path=/;`;
         submitButton.style.display = "none";
-        const speakerDiv = document.querySelector(`input[value="${voter_id}"]`).closest('.speaker');
+        const speakerDiv = document.querySelector(`input[value="${selectedSpeaker}"]`).closest('.speaker');
         if (speakerDiv) {
             const checkIcon = speakerDiv.querySelector('.check-icon');
             checkIcon.style.display = 'block'; // Show the check icon
