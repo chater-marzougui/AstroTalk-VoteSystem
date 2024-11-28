@@ -151,6 +151,7 @@ h2, h3, label {
     color: rgb(3, 255, 49);
     border-radius: 50%;
     font-size: 160px;
+    margin-left: 25px;
     display: none;
 }
 

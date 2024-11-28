@@ -120,10 +120,20 @@ async function submitVote() {
     }
     submitButton.style.display = "none";
 
+    let retries = 6;
+    while (retries > 0) {
+        try {
+            await sendVote();
+            return;
+        } catch (error) {
+            console.log(error.message);
+            retries--;
+        }
+    }
+
     try {
         await sendVote();
     } catch (error) {
-        await new Promise(resolve => setTimeout(resolve, 500));
         console.log(error.message);
         submitButton.style.display = "flex";
         alert("Error submitting vote. Please try again.");
