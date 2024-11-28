@@ -147,6 +147,11 @@ function updateVotePhotos() {
         voter_id = voter_id_cookie.trim().split('=')[1];
         
         const speakerDiv = document.querySelector(`input[value="${voter_id}"]`).closest('.speaker');
+        // remove the check icon from all speakers
+        document.querySelectorAll('.check-icon').forEach(icon => {
+            icon.style.display = 'none';
+        });
+
         if (speakerDiv) {
             const checkIcon = speakerDiv.querySelector('.check-icon');
             checkIcon.style.display = 'block'; // Show the check icon
@@ -259,6 +264,7 @@ socket.on('endTime', ({ endTime }) => {
     timerContainerElement.style.display = "flex";
     submitButton.style.display = "flex";
     submitButton.textContent = "Vote";
+    submitButton.disabled = false;
     startTimer(endTime);
     updateVotePhotos();
 });
