@@ -50,14 +50,14 @@ body::-webkit-scrollbar {
 
 #welcome-message {
     font-size: 1.8em;
-    color: #0935FF;
+    color: #0991C2;
     text-align: center;
     width: 100%;
 }
 
 #vote-message {
     font-size: 1.4em;
-    color: #0935FF;
+    color: #0991C2;
     text-align: center;
 }
 

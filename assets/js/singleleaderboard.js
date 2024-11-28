@@ -220,7 +220,7 @@ socket.on('connect', () => {
 
 socket.on('update_speakers', async (data) => {
     speakers = data;
-    if(timerRunning || speakers['endTime'] === 0) {
+    if(timerRunning || speakers.endTime === 0) {
         updateSpeakersVisualization();
     }
 });
