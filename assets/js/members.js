@@ -12,6 +12,7 @@ const socket = io(host, {
 });
 
 let timeEnded = true;
+let endTime;
 let isTimerRunning = false;
 let selectedSpeaker = null;
 let speakers;
@@ -151,6 +152,7 @@ function updateVotePhotos() {
                     submitButton.disabled = timeEnded;
                     submitButton.style.display = "flex";
                     submitButton.textContent = timeEnded ? "Time has ended" : "Change Vote";
+                    submitButton.textContent = endTime > 0 ? submitButton.textContent : "Voting hasn't started yet";
                 }
             } else {
                 submitButton.disabled = false;
@@ -194,7 +196,13 @@ async function fetchSpeakersAndLoad() {
         }
     }
 
-    let endTime = speakers.endTime;
+    endTime = speakers.endTime;
+
+    console.log(endTime);
+
+    if(endTime === 0) {
+        submitButton.textContent = "Voting hasn't started yet";
+    }
     if (endTime >= new Date().getTime()) {
         console.log(endTime);
         console.log(new Date().getTime());
@@ -214,7 +222,10 @@ async function fetchSpeakersAndLoad() {
         speakerDiv.innerHTML = `
         <h2>${speaker.name}</h2>
         <div class="photo-container">
-            <img class="speaker" src="${speaker.photo}" alt="${speaker.name}">
+            <div class="wrapper">
+                <img class="project" src="${speaker.png}" alt="${speaker.project}">
+                <img class="speaker" src="${speaker.photo}" alt="${speaker.name}">
+            </div>
             <span class="check-icon" style="display: none;">&#x2714;</span>
         </div>
         <h3>${speaker.project}</h3>
@@ -250,7 +261,13 @@ async function testIncognito(){
         if (result.isPrivate) {
             loadingScreen.style.display = "none";
             welcomeScreen.style.display = "flex";
-            welcomeMessage.textContent = "Please disable incognito\nmode to continue.";
+            welcomeMessage.style.color = "red";
+            welcomeMessage.style.fontSize = "1.5rem";
+            welcomeMessage.style.textAlign = "center";
+            if(window.innerWidth > 640){
+                welcomeMessage.style.width = "20%";
+            }
+            welcomeMessage.textContent = "Please disable Incognito\nWe don't do that here.";
         } else {
             fetchSpeakersAndLoad();
         }

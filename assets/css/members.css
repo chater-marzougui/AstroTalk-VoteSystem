@@ -38,6 +38,7 @@ body::-webkit-scrollbar {
     justify-content: space-around;
     align-items: center;
     width: 100%;
+    height: 100%;
 }
 
 .rowAbs img {
@@ -51,6 +52,7 @@ body::-webkit-scrollbar {
     font-size: 1.8em;
     color: #0935FF;
     text-align: center;
+    width: 100%;
 }
 
 #vote-message {
@@ -116,6 +118,23 @@ h2, h3, label {
     margin-bottom: 20px;
     cursor: pointer;
 }
+
+.wrapper {
+    position: relative;
+    width: 300px;
+    height: 300px;
+}
+
+.wrapper img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 25px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 
 .timer {
     font-size: 3.5em;

@@ -37,6 +37,7 @@ class SpeakerWheel {
     renderCards() {
         document.getElementById('main-row').style.display = 'none';
         document.getElementById('selectedSpeakers').style.display = 'none';
+        const wheelButton = document.getElementById('wheel_btn');
         
         const cardsContainer = document.getElementById('cards-container');
         cardsContainer.style.display = 'flex';
@@ -45,10 +46,11 @@ class SpeakerWheel {
             .map((speaker, index) => `
                 <div class="card">
                     <div class="wrapper">
+                        <img src="${speaker.png}" class="cover-image" />  
                         <img src="${speaker.photo}" class="cover-image" />  
                     </div>
                     <h3 class="title">${index + 1}. ${speaker.name}</h3>
-                    <img src="${speaker.png}" class="character" />
+                    <img src="${speaker.photo}" class="character" />
                 </div>
             `).join('');
         // Add animation after a brief delay to ensure DOM is ready
@@ -58,6 +60,33 @@ class SpeakerWheel {
                 card.classList.add('show');
             });
         });
+
+    // Wait for the animation to finish
+    let lastActiveCard = null;
+
+    setTimeout(() => {
+
+        // Add active class to the cards with a 1-second delay
+        cardsContainer.querySelectorAll('.card').forEach((card, index) => {
+            setTimeout(() => {
+                // Remove active class from the last card, if any
+                if (lastActiveCard) {
+                    lastActiveCard.classList.remove('active');
+                }
+
+                // Add active class to the current card
+                card.classList.add('active');
+
+                // Update the last active card
+                lastActiveCard = card;
+            }, index * 2000);
+        });
+    }, 2000);
+
+    setTimeout(() => {
+        lastActiveCard.classList.remove('active');
+        wheelButton.style.display = 'block';
+    }, 2000 * this.selectedSpeakers.length + 2000);
     }
 
     showSelectionDialog(winner) {
@@ -105,16 +134,15 @@ class SpeakerWheel {
         this.wheel.innerHTML = '';
         const angleStep = 360 / this.speakers.length;
         
-        // Create wheel background
         let wheelBg = this.speakers.map((_, i) => {
             const color = this.getColor(i, this.speakers.length);
             const start = i * angleStep;
             const end = (i + 1) * angleStep;
             return `${color} ${start}deg ${end}deg`;
         }).join(', ');
-        
-        this.wheel.style.background = `conic-gradient(${wheelBg})`;
 
+        this.wheel.style.background = `conic-gradient(${wheelBg})`;
+      
         // Add speakers
         this.speakers.forEach((speaker, i) => {
             const speakerEl = document.createElement('div');
@@ -122,7 +150,10 @@ class SpeakerWheel {
             speakerEl.style.transform = `rotate(${i * angleStep + angleStep/2}deg) translateY(-15px)`;
             
             speakerEl.innerHTML = `
-                <img src="${speaker.photo}" alt="${speaker.name}">
+                <div class="wheel_image_wrapper">
+                    <img src="${speaker.png}"/>
+                    <img src="${speaker.photo}" alt="${speaker.name}">
+                </div>
                 <p>${speaker.name}</p>
             `;
             

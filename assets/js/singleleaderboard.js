@@ -7,6 +7,7 @@ const socket = io(host , {
 
 const timerElement = document.getElementById('timer');
 const timerContainerElement = document.getElementById('timer-container');
+const imagesRow = document.getElementById('images_row');
 
 let timerRunning = false;
 let timerStarted = false;
@@ -57,10 +58,29 @@ async function fetchSpeakers() {
 
     if (response.status === 200) {
         speakers = await response.json();
-    } else {
-        // retry after 5 seconds
-        await new Promise(resolve => setTimeout(resolve, 500));
-        fetchSpeakers();
+        speakers.speakers.forEach(speaker => {
+            const speakerDiv = document.createElement('div');
+            speakerDiv.classList.add('wrapper');
+            speakerDiv.innerHTML = `
+                <img class="spk-img" src="${speaker.png}" alt="">
+                <img class="spk-img" src="${speaker.photo}" alt="">
+            `;
+            imagesRow.appendChild(speakerDiv);
+        });
+
+        updateSpeakersVisualization();
+    }
+}
+
+async function fetchSpeakersAndLoad() {
+    let x = false;
+    while (!x) {
+        try {
+            await fetchSpeakers();
+            x = true;
+        } catch (error) {
+            console.log(error.message);
+        }
     }
 }
 
@@ -195,6 +215,7 @@ async function updateSpeakersVisualization() {
 // socket on new speaker
 socket.on('connect', () => {
     console.log('Connected to WebSocket server');
+    socket.emit('getTimer', () => {});
 });
 
 socket.on('update_speakers', async (data) => {
@@ -204,8 +225,6 @@ socket.on('update_speakers', async (data) => {
     }
 });
 
-socket.emit('getTimer', () => {});
-
 socket.on('setTime', (data) => {
     console.log(data);
     if (data.endTime >= new Date().getTime()) {
@@ -213,4 +232,4 @@ socket.on('setTime', (data) => {
     }
 });
 
-fetchSpeakers().then(updateSpeakersVisualization);
+fetchSpeakersAndLoad()

@@ -19,6 +19,7 @@ def handle_connect():
     with open(speakers_file, 'r') as file:
         spk = json.load(file)
         spk['entered'] = len(internal_IP_voters)
+        spk['endTime'] = endTime
         socketio.emit('update_speakers', spk)
     print('Client connected')
 
