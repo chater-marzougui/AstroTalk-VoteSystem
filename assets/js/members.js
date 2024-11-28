@@ -268,10 +268,9 @@ async function testIncognito(){
                 welcomeMessage.style.width = "20%";
             }
             welcomeMessage.textContent = "Please disable Incognito\nWe don't do that here.";
-
-            // time ou 5 seconds and redirect to youtube
+            
             setTimeout(() => {
-                window.location.href = "https://www.youtube.com/watch?v=LgncSiSnIyI&ab_channel=Spione";
+                window.location.href = "https://www.youtube.com/watch?v=Jw9H_OdcKC8&ab_channel=CyberTrend";
             }, 3000);
         } else {
             fetchSpeakersAndLoad();
